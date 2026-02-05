@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol";
+
+import {IERC20} from "./Interface/extendedIERC20.sol";
 
 contract SourceBridge{
     IERC20 private ZToken;
@@ -26,4 +27,5 @@ contract SourceBridge{
         totalLiquidity -= amount;
         emit Withdraw(user, amount);
     }
+
 }
