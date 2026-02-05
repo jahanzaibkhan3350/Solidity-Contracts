@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 /*imported an IERC20 interface having some extra functions
 to support the functionality of the bridge*/
-import {IERC20} from "./Interface/extendedIERC20.sol";
+import {IERC20} from "../Interface/extendedIERC20.sol";
 
 contract SourceBridge{
 // Declare the Interface by a name
@@ -42,5 +42,6 @@ function withdrawTokens(address user, uint256 amount) public {
     }
 
 }
+
 
 
