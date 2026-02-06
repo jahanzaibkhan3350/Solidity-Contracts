@@ -25,6 +25,15 @@ transaction on the Destination Bridge. */
 event Deposit(address indexed user, uint256 indexed amount);
 event Withdraw(address indexed , uint256 indexed);
 
+/* This is the core function when a user call this function
+the tokens are transferred from its account to the contract 
+itself and an event is emited which is the most important 
+thing, by this event the external detect this deposit and 
+performs transfer from the destinationBridge contract and 
+the user will get equivalent token on the destination chain. */
+// Important: Make sure to Approve SourceBridge Contract if
+you are doing all the stuff manually.
+
 function depositTokens(uint256 amount) public {
     require(amount > 0, "Cannot be Zero");
     ZToken.transferFrom(msg.sender, address(this), amount);
@@ -42,6 +51,7 @@ function withdrawTokens(address user, uint256 amount) public {
     }
 
 }
+
 
 
 
