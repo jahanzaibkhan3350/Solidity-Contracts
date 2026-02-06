@@ -36,7 +36,7 @@ event Withdraw(address indexed , uint256 indexed);
 /* This is the core function when a user call this function
 the tokens are transferred from its account to the contract 
 itself and an event is emited which is the most important 
-thing, by this event the external detect this deposit and 
+thing, by this event the external script detect this deposit and 
 performs transfer from the destinationBridge contract and 
 the user will get equivalent token on the destination chain. */
 /* Important: Make sure to Approve SourceBridge Contract if
@@ -49,7 +49,7 @@ function depositTokens(uint256 amount) public {
     totalLiquidity += amount;
     emit Deposit(msg.sender, amount);
     }
-*/ This function is used to withdraw tokens from the contract but 
+/* This function is used to withdraw tokens from the contract but 
 only the authorized person can call this. Authorized address should be 
 the address of the external script. */
 
@@ -70,6 +70,7 @@ modifier authorizedOnly(){
         _;
     }
 }
+
 
 
 
