@@ -47,11 +47,13 @@ _owner will be address of the external party which will monitor events on first 
         emit Locked(user, amount);
     }
     /*
-A modifier so only the external party can call unlock function, as this function only needs to be called when user deposits tokens on {Bridge.sol}
+A modifier so only the external party can call unlock function, as this function only needs to be called when user deposits tokens
+* on {Bridge.sol}
 */
     modifier authorizedOnly(){
         require(msg.sender == _owner, "Authorized Only Function");
         _;
     }
 }
+
 
