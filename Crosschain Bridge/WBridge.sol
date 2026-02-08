@@ -23,7 +23,7 @@ _owner will be address of the external party which will monitor events on first 
     /*
     _balances to track the balances of the users. Locked event for the external party, so it can call withdrawTokens function on the
     * fisrt bridge contract.
-    * See {bridge.sol}.
+    * See {Bridge.sol}.
     */
     mapping (address => uint256) private _balances;
 
@@ -31,7 +31,7 @@ _owner will be address of the external party which will monitor events on first 
     /*
     Only the external party can call this function, after the user will call depositTokens function on the first bridge which emits
     * an event.
-    * See {bridge.sol}
+    * See {Bridge.sol}
     */
     function unlock(address user, uint256 amount) public authorizedOnly {
         WZToken.mint(user, amount);
@@ -46,7 +46,9 @@ _owner will be address of the external party which will monitor events on first 
         WZToken.burn(user, amount);
         emit Locked(user, amount);
     }
-    // A modifier so only the external party can call some critical functions
+    /*
+A modifier so only the external party can call unlock function, as this function only needs to be called when user deposits tokens on {Bridge.sol}
+*/
     modifier authorizedOnly(){
         require(msg.sender == _owner, "Authorized Only Function");
         _;
