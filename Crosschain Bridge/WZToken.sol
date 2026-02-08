@@ -32,9 +32,10 @@ contract WZToken is ERC20{
         _mint(to,value);
         emit Mint(to, value);
     }
+
     function burn(address from, uint256 value) external onlyOwner {
         _burn(from, value);
         emit Burn(from, value);
     }
-
 }
+
