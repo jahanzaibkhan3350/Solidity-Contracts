@@ -38,4 +38,3 @@ contract WZToken is ERC20{
         emit Burn(from, value);
     }
 }
-
