@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// import "../CrossChainBridge/extendedIERC20.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol";
-
+import {IERC20} from "../Interface/extendedIERC20.sol";
 
 contract LiquidityPool is ERC20{
     
@@ -52,34 +50,48 @@ contract LiquidityPool is ERC20{
 
     function removeLiquidity(uint256 amount) public {
        require(amount <= balanceOf(msg.sender) && amount > 0, "Insufficient Funds");
+
        uint256 amountToken1 = (amount*reserve1) / totalSupply();
        uint256 amountToken2 = (amount*reserve2) / totalSupply();
+
        require(amountToken1 > 0 && amountToken2 > 0, "Insufficient Transfer Amount");
+
        _burn(msg.sender, amount);
+
        require(token1.transfer(msg.sender, amountToken1), "Transfer Failed");
        require(token2.transfer(msg.sender, amountToken2), "Transfer Failed");
+
        _updateReserve(reserve1 - amountToken1, reserve2 - amountToken2);
+
        emit LPTokensBurned(msg.sender, amount);
     }
     function swapTokens(address tokenToSwap, uint256 valueToSwap, uint256 minAmountOut) public {
-        require(totalSupply() >0,"Add Liquidity First");
-        require(tokenToSwap == address(token1) || tokenToSwap == address(token2), "Invalid Address");
+      require(totalSupply() >0,"Add Liquidity First");
+
+      require(tokenToSwap == address(token1) || tokenToSwap == address(token2), "Invalid Address");
       bool isToken1 = tokenToSwap == address(token1);
+
       (IERC20 tokenIn, IERC20 tokenOut) = isToken1 ? (token1, token2): (token2, token1);
+
       uint256 reserveOut = tokenOut.balanceOf(address(this));
       uint256 reserveIn  = tokenIn.balanceOf(address(this));
+
       uint256 amountwithfee = (valueToSwap * 995) / 1000; // fee 0.5%
+
       require(tokenIn.transferFrom(msg.sender, address(this), valueToSwap), "transferFrom Failed");
+
       uint256 amountOut = (reserveOut * amountwithfee) / (reserveIn + amountwithfee);
       require(amountOut >= minAmountOut, "Slippage Tolerance Exceeded");
       require(amountOut <= tokenOut.balanceOf(address(this)), "Insuffcient Liquidity in the Pool");
+
       require(tokenOut.transfer(msg.sender, amountOut),"Transfer Failed");
+
       _updateReserve(token1.balanceOf(address(this)), token2.balanceOf(address(this)));
       
-      
-      
     }
-
+    /* 
+    Helper functions
+    */
      function sqrt(uint256 y) internal pure returns (uint256 z) {
         if (y > 3) {
             z = y;
