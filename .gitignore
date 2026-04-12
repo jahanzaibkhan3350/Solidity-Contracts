@@ -5,6 +5,7 @@ src/
 test/
 script/
 lib/
+README.md/
 # Ignores development broadcast logs
 !/broadcast
 /broadcast/*/31337/
